@@ -1,6 +1,7 @@
 #!/bin/bash
 amiID='068663a3c619dd892'
 iNum='1'
+sshKey="aws"
 iType='t2.micro'
 iSg='0654b352a41c99d03'
 
@@ -9,6 +10,7 @@ iId=$(aws ec2 run-instances \
 --image-id ami-$amiID \
 --count $iNum \
 --instance-type $iType \
+--key-name $sshKey \
 --security-group-ids sg-$iSg \
 --user-data file://instance-setup.sh)
 #parse the json for the instance id
