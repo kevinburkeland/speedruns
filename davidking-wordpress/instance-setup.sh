@@ -1,6 +1,14 @@
 #!/bin/bash
-sudo apt update
-sudo apt install docker-compose -y
+
+sudo apt update &
+UpdatePID=$!
+
+sudo curl -L https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m) -o /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
+
+wait $UpdatePID
+sudo apt install docker.io -y &
+InstallPID=$!
 
 cat > docker-compose.yml <<EOF
 version: '3.3'
@@ -32,4 +40,5 @@ services:
 volumes:
     db_data: {}
 EOF
-sudo docker-compose up
+wait $InstallPID
+sudo /usr/local/bin/docker-compose up
